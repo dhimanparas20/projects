@@ -187,14 +187,14 @@ void E(int t1,int t2){
   on(D5,t1);
   on(D7,t1);
   on(D8,t1);
-  on(D0,t1);
+  on(D0,on_stay);
   off(D3,t2);
   off(D2,300);
   off(D1,t2);
   off(D5,t2);
   off(D7,t2); 
   off(D8,t2);
-  off(D0,t2); 
+  off(D0,off_stay); 
 }
 
 void f(int t1,int t2){
