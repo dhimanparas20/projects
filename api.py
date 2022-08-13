@@ -1,4 +1,4 @@
-# Inport Libraries
+# Import Libraries
 import requests, json 
 from os import system 
 
