@@ -17,14 +17,14 @@ collection.insert_one(dict)
 '''
 
 #Inserting multiple value to collection
-'''dict = [{"name":"Paras","api":"qwertyuiop","age":6},
+dict = [{"name":"Paras","api":"qwertyuiop","age":6},
         {"name":"Ansh","api":"asdfghjkl","age":66},
         {"name":"Arun","api":"zxcvbnm","age":56},
         {"name":"Nikhil","api":"qaz","age":99},
         {"name":"Nikhil","api":"wsx","age":34}              
 ] 
 collection.insert_many(dict)
-'''
+
 
 # Show all items inside collection
 '''one = collection.find()
@@ -84,4 +84,9 @@ print(up.deleted_count)
 # Deleting all fields
 '''up = collection.delete_many({})
 print(up.deleted_count)
+'''
+
+# Deleting a collection name and deleting Database name
+''''db.drop_collection('api')
+client.drop_database('main')
 '''
