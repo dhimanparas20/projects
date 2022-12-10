@@ -1,6 +1,5 @@
 from os import system
 from time import time,sleep
-from print import cast
 system("clear")
 
 lst = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] # Stored list of alphabets
