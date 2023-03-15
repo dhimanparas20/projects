@@ -10,9 +10,9 @@ system("clear")
 # MYSQL VARIABLES
 HOST="localhost"
 USER="root"
-PASS="Luffykiid@2069"
-DATABASE="rockonrescue"
-TABLE="rescue"
+PASS=""
+DATABASE=""
+TABLE=""
 
 try:
   db = mc.connect(host='localhost',
@@ -88,7 +88,7 @@ try:
     for i in mc :
       return i["COUNT(*)"]
 
-  def table_delete(id):
+  def table_delete(id):  #delete data entry
     sql = f"delete from {TABLE} where  id=%s"
     val = ([id])
     mc.execute(sql,val)
@@ -101,8 +101,7 @@ except Error as e:
 
 #table_insert("hgjg1", "Ramu", 1, "lala lala", "yes", "jpg")
 #table_update("dfsdf","age", 8)
-#for i in table_disp():
-#  print(i)
+#print(table_disp())
 #print(table_fetch("hgjg1"))
 #print(table_count())
 #table_delete("dfsdf")
