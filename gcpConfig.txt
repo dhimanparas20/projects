@@ -1,0 +1,9 @@
+//Steps to use Google API for uploading/Downloading Data to Drive
+
+1: Goto "https://console.cloud.google.com/" and create a new project
+2: Enable Google Drive API & other necessary API's
+3: Goto API and Services ans goto OAuth consent screen and create an Internal app. Dont choose External else you'll face issues
+4: Goto API and Services ans goto credentails and create OAuth consent ID as "Desktop" dont choose "Web Application"
+5: Download the clients_secrets.json and rename it to credentials.json
+6: To add Service Accounts and link them to your TeamDrive visit "https://github.com/lzzy12/python-aria-mirror-bot"
+7: for python projects rename credentials.json to clients_secrets.json and when u will run app for 1st time after authroization will be created automatically
