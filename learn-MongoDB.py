@@ -90,3 +90,8 @@ print(up.deleted_count)
 ''''db.drop_collection('api')
 client.drop_database('main')
 '''
+
+# Closing The Connection
+'''
+client.close()
+'''
