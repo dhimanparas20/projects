@@ -18,4 +18,3 @@ sudo systemctl daemon-reload
 sudo systemctl enable docker-container-1.service
 sudo systemctl start docker-container-1.service
 sudo systemctl status docker-container-1.service
-sudo reboot
