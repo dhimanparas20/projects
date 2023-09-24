@@ -12,7 +12,7 @@ ExecStop=/usr/bin/docker stop container-1
 
 [Install]
 WantedBy=multi-user.target
-" >> sudo nano /etc/systemd/system/docker-container-1.service
+" >> /etc/systemd/system/docker-container-1.service
 
 sudo systemctl daemon-reload
 sudo systemctl enable docker-container-1.service
