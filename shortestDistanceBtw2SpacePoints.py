@@ -27,6 +27,6 @@ for i in range(0,len(lst)):
 
 for i in range(0,len(lst)):
     if i+1 < len(lst):
-      if lst[i+1]-lst[i] == sort(gap)[0]:
-          print(f"The 2 shortest points are: {lst[i+1]}&{lst[i]}\nDistance: {sort(gap)[0]}")      
+      if lst[i+1]-lst[i] == sort(gap)[i]:
+          print(f"The 2 shortest points are: {lst[i+1]}&{lst[i]}\tDistance: {sort(gap)[i]}")      
           print("------------------------------------------")
