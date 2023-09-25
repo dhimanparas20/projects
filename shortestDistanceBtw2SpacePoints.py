@@ -1,32 +1,22 @@
-lst = []
-gap = []
+# Prompt the user for input and create the list
+n = int(input("Enter the length of the list: "))
+lst = [int(input(f"Enter the element {i + 1}: ")) for i in range(n)]
 
-n = int(input("Enter the length of list: "))
-for i in range(0,n):
-    inp = int(input(f"Enter the element {i+1}: "))
-    lst.append(inp)
+# Sort the list
+lst.sort()
 
-def sort (lst):
-    ln = len(lst)
-    for i in range(0,ln):
-        for j in range(0,ln):
-            if lst[i] < lst[j]:
-                tmp = lst[j]
-                lst[j] = lst[i]
-                lst[i] = tmp
-    return lst
+# Calculate the differences between consecutive elements
+gaps = [lst[i + 1] - lst[i] for i in range(len(lst) - 1)]
 
-lst = sort(lst)
+# Find the two shortest distances
+sorted_gaps = sorted(gaps)
+shortest_distances = sorted_gaps[:2]
+
+# Print the results
 print("------------------------------------------")
 print(f"Sorted list is: {lst}")
-
-for i in range(0,len(lst)):
-    if i+1 < len(lst):
-      gap.append((lst[i+1]-lst[i]))
-      #print(f"{lst[i+1]}-{lst[i]}= {lst[i+1]-lst[i]}")
-
-for i in range(0,len(lst)):
-    if i+1 < len(lst):
-      if lst[i+1]-lst[i] == sort(gap)[i]:
-          print(f"The 2 shortest points are: {lst[i+1]}&{lst[i]}\tDistance: {sort(gap)[i]}")      
-          print("------------------------------------------")
+for distance in shortest_distances:
+    indices = [i for i, gap in enumerate(gaps) if gap == distance]
+    for index in indices:
+        print(f"The 2 shortest points are: {lst[index]} & {lst[index + 1]}\tDistance: {distance}")
+        print("------------------------------------------")
