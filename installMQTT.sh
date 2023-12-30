@@ -3,7 +3,7 @@ sudo apt update
 sudo apt-get update
 sudo apt upgrade -y
 sudo apt-get upgrade-y
-sudo apt-get install mosquitto mosquitto-clients -y
+sudo apt-get install mosquitto mosquitto-clients ufw -y
 mosquitto -v
 delay 2000
 clear
@@ -13,4 +13,5 @@ sudo -i
 echo "listner 1883" >> /etc/mosquitto/conf.d/my.conf
 echo "allow_anonymous true" >> /etc/mosquitto/conf.d/my.conf
 exit
+sudo ufw allow 1883/tcp
 sudo systemctl restart mosquitto.service
