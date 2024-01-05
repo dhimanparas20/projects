@@ -44,7 +44,7 @@ class MongoDB:
         else:
             return False  
         
-    def hashit(data):
+    def hashit(self,data):
         # Hash the password using Passlib's pbkdf2_sha256
         return pbkdf2_sha256.hash(data)   
 
