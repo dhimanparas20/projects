@@ -19,3 +19,4 @@ echo "protocol websockets" >> /etc/mosquitto/conf.d/protocols.conf
 sudo mosquitto_passwd -c /etc/mosquitto/passwd mst
 sudo ufw allow 1883/tcp
 sudo systemctl restart mosquitto.service
+mosquitto -c mosquitto.conf -p 1884
