@@ -2,7 +2,7 @@ sudo rm /var/lib/apt/lists/lock
 sudo apt update
 sudo apt-get update
 sudo apt upgrade -y
-sudo apt-get upgrade-y
+sudo apt-get upgrade -y
 sudo apt-get install mosquitto mosquitto-clients ufw -y
 #mosquitto -v
 delay 2000
