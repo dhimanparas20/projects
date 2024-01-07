@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt upgrade -y
 sudo apt-get upgrade-y
 sudo apt-get install mosquitto mosquitto-clients ufw -y
-mosquitto -v
+#mosquitto -v
 delay 2000
 clear
 sudo systemctl enable mosquitto.service
