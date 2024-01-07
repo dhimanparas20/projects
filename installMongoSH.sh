@@ -16,3 +16,7 @@ sudo systemctl restart mongod
 # if system doesnt support AVX then run mongo on docker 
 # docker run -d -p 27017:27017 mongo:4.4
 # docker exec -it 881e7c2e332b mongo  #Replace 881e7c2e332b with your actual MongoDB container ID.
+# docker network create my-network
+# docker network connect my-network 881e7c2e332b  # MongoDB container
+# docker network connect my-network tgbot        # Other containers
+# docker network connect my-network mstapi
