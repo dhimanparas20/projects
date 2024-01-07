@@ -12,3 +12,7 @@ sudo systemctl daemon-reload
 sudo systemctl status mongod
 sudo systemctl enable mongod
 sudo systemctl restart mongod
+
+# if system doesnt support AVX then run mongo on docker 
+# docker run -d -p 27017:27017 mongo:4.4
+# docker exec -it 881e7c2e332b mongo  #Replace 881e7c2e332b with your actual MongoDB container ID.
