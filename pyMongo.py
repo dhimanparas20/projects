@@ -33,6 +33,8 @@ class MongoDB:
         count  = up.modified_count
         if count >0:
             return True
+        elif count == 0:
+            return ({"message":"Nothing To modify"})
         else:
             return False
         
@@ -66,4 +68,4 @@ mydb.fetch()
 data = mydb.fetch({"name":"d"})
 hashpass = data[0]["password"]
 print(mydb.verifyHash("mypassword",hashpass))
-'''        
+'''       
