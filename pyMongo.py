@@ -1,121 +1,84 @@
-#pip3 install pymongo==4.6.0
-#pip3 install passlib==1.7.4
-import pymongo
-import random
-import string 
-from passlib.hash import pbkdf2_sha256
-DEFAULT_STRING= "mongodb://localhost:27017/"
-#Syntax for cloud based Connection String
-'''client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster1.n5hitou.mongodb.net/?retryWrites=true&w=majority")'''
+from flask import Flask, render_template,make_response,request, session, redirect, url_for,current_app
+from flask_restful import Api, Resource
+from flask_session import Session
+import pyMongo
+from os import environ,system,getcwd
+system("clear")
+system(f"rm -rf {getcwd()}/flask_session")
 
-def hashit(data:str):  #hashes any data givent to it
-        # Hash the password using Passlib's pbkdf2_sha256
-        return pbkdf2_sha256.hash(data)
-def verifyHash(password:str, hashedpassword:str):
-        return pbkdf2_sha256.verify(password, hashedpassword)
-def genString(length=15):
-    characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(characters) for _ in range(length))
-    return random_string
-class MongoDB:  #Main Class
-    def __init__(self,db_name=None,collection_name=None,connectionStr=DEFAULT_STRING):
-        try: 
-            self.client = pymongo.MongoClient(connectionStr)
-            if db_name and collection_name:
-                self.db = self.client[db_name]
-                self.collection = self.db[collection_name]
-        except:
-            return False       
-    def addDB(self,db_name,collection_name):
-        self.db = self.client[db_name]
-        self.collection = self.db[collection_name]  
-    def getAllDB(self):
-        database_list = self.client.list_database_names()
-        result = []
-        for database in database_list:
-            result.append(database) 
-        return result 
-    def getAllCollection(self,db_name=None):
-        if db_name:
-            db = self.client[db_name]
-        else:
-            db = self.client[self.db]    
-        collections = db.list_collection_names()
-        result = []
-        for collection in collections:
-            result.append(collection) 
-        return result   
-    def insert(self, data={}):
-        self.collection.insert_one(data)
-        #lst = [data]
-        #self.collection.insert_many(lst)
-        return True
-    def fetch(self,data=None,show_id=False):    
-        id = {"_id": 0} if not show_id else {"_id": 1}    
-        result = []
-        res = self.collection.find(data,id)
-        for item in res:
-            result.append(item)      
-        return result       
-    def count(self,data={}):
-        count = self.collection.count_documents(data)
-        return count  
-    def update(self,prev,nxt):
-        nxt = {"$set":nxt}
-        up = self.collection.update_many(prev,nxt)
-        count  = up.modified_count
-        if count >0:
-            return True
-        elif count == 0:
-            return ({"message":"Nothing To modify"})
-        else:
-            return False        
-    def delete(self,data={}):
-        dlt = self.collection.delete_many(data)
-        count = dlt.deleted_count
-        if count > 0:
-            return True
-        else:
-            return False  
-    def dropDB(self,db_name=None):
-        try:
-            if db_name:
-                self.client.drop_database(db_name)
-            else:
-                if self.db:
-                    self.client.drop_database(self.db) 
-                else:
-                    return False          
-            return True
-        except Exception as e:
-            # print(f"Error: {e}")
-            return False
-    def dropCollection(self,db_name=None,collection_name=None): #Delete A Collection
-        try:
-            if collection_name and db_name==None:
-                db = self.client[self.db]
-                db.drop_collection(collection_name)    
-                
-            if db_name and collection_name:
-                db = self.client[db_name]
-                db.drop_collection(collection_name)
-                    
-            return True
-        except Exception as e:
-            # print(f"Error: {e}")
-            return False               
-    def close(self):
-        self.client.close()
+app = Flask(__name__)
+api = Api(app)
+app.config['SECRET_KEY'] = "c365a380254da310e47c24a692dad2e8"
+app.config['SESSION_TYPE'] = 'filesystem'  #Sessions are stored as files on the server.(development only)
+app.config['SESSION_PERMANENT'] = True #False -> session will expire when the browser is closed.
+app.config['SESSION_USE_SIGNER'] = True  # adds a cryptographic signature to the session cookie 
+app.config['SESSION_COOKIE_SAMESITE'] = 'None' #cookies will be sent with cross-origin requests.
+app.config['SESSION_COOKIE_SECURE'] = True #ensures that the session cookie is only sent over HTTPS connections.
+Session(app)
 
-#USAGE EG.
-'''
-from pyMongo import MongoDB
-mydb = MongoDB("db_name","doc_name")
-hasedpass = MongoDB.hashit("mypassword")
-data = {"name":"d","id":4,"tax":False,"password":hashedpass}
-mydb.insert(data)
-mydb.fetch()
-data = mydb.fetch({"name":"d"})
-hashpass = data[0]["password"]
-print(mydb.verifyHash("mypassword",hashpass))
-'''         
+#Shows List of Databases
+class Home(Resource):
+    def get(self):
+        id = session.get('id')
+        if id:
+            databases = current_app.db.getAllDB()
+            return make_response(render_template("dashboard.html",data=databases))
+            # return ({"id":id,"String":string,"msg":"You are logged in"})
+        else:
+           return redirect(url_for("connect"))
+#Shows List of Collections inside a DB
+class ShowCollections(Resource):
+    def get(self):
+        id = session.get('id')
+        if id:
+            data = request.args.to_dict()
+            session['currentdatabase'] = data['dbname']
+            collections = current_app.db.getAllCollection(db_name=data['dbname'])
+            # return (collections)
+            return make_response(render_template("collections.html",data=collections))
+        else:
+           return redirect(url_for("connect"))       
+#Shows data Inside A collection
+class getData(Resource):
+    def get(self):
+        id = session.get('id')
+        if id:
+            data = request.args.to_dict()
+            collection = data['collectionName']
+            current_app.db.addDB(db_name=session.get('currentdatabase'),collection_name=collection)
+            dbdata = current_app.db.fetch(show_id=False)
+            return make_response(render_template("data.html", data=dbdata))
+        else:
+            return redirect(url_for("connect")) 
+# Normal Login
+class Connect(Resource):
+    def get(self):
+        return make_response(render_template('connect.html'))
+    
+    def post(self):
+        data = request.form.to_dict()
+        string = "mongodb://localhost:27017/" if not data['string'] else data['string']
+        current_app.db = pyMongo.MongoDB(connectionStr=string)
+        if current_app.db != False:
+            session['id'] = pyMongo.genString()
+            return ({"msg":"Success"})
+        # return ({"msg":"Invalid Credentials or String"})  
+#Logout
+class Logout(Resource):
+    def get(self):
+      id = session.get('id')
+      if 'id' in session:
+        session.pop('id', None)  # Remove user_id from session
+        return redirect(url_for("connect"))
+    
+      else:
+        return redirect(url_for("connect"))  
+
+api.add_resource(Home, '/')
+api.add_resource(Connect, '/connect')
+api.add_resource(Logout, '/logout')
+api.add_resource(ShowCollections, '/collection')
+api.add_resource(getData, '/getdata')
+
+if __name__ == '__main__':
+    app.run(debug=True,port=5000,host="0.0.0.0",threaded=True)
