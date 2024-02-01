@@ -81,9 +81,10 @@ class MongoDB:  #Main Class
         #self.collection.insert_many(lst)
         return True
 
-    def fetch(self,data=None,show_id={"_id":0}):
+    def fetch(self,data=None,show_id=False):    
+        id = {"_id": 0} if not show_id else {"_id": 1}    
         result = []
-        res = self.collection.find(data,show_id)
+        res = self.collection.find(data,id)
         for item in res:
             result.append(item)      
         return result
