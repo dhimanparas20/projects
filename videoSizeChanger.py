@@ -2,14 +2,14 @@ import os
 import subprocess
 
 # Input video file path
-input_video_path = 'demovideo.mp4'
+input_video_path = 'videodemo.mp4'
 
 # Create output directory if it doesn't exist
 output_dir = 'output'
 os.makedirs(output_dir, exist_ok=True)
 
 # Define target resolutions
-resolutions = [(480, 360), (854, 480), (1920, 1080)]
+resolutions = [(480, 360), (640, 480),(1280, 720), (1920, 1080)]
 
 # Process each resolution
 for idx, (width, height) in enumerate(resolutions, start=1):
